@@ -1,4 +1,4 @@
-	-- SmartOptics Enterprise Specific TC MIB.
+-- SmartOptics Enterprise Specific TC MIB.
 --
 -- Copyright (c) 2011, SmartOptics
 -- All rights reserved
@@ -16,11 +16,16 @@ IMPORTS
 
 
 smartTcMIB     MODULE-IDENTITY
-                LAST-UPDATED    "201402121327Z"
+                LAST-UPDATED    "201502121011Z"
                 ORGANIZATION    "SmartOptics"
                 CONTACT-INFO    "http://www.smartoptics.com"
                 DESCRIPTION
                                 "This is the enterprise specific TC MIB for SmartOptics M-Series"
+                REVISION        "201502121011Z"
+                DESCRIPTION
+                                "Added PortStatus cd, ncd, ready, highLoss and lowLoss.
+                                 Added PortMode disable."
+
                 REVISION        "201402121327Z"
                 DESCRIPTION
                                 "Added PortStatus and PortMode."
@@ -76,63 +81,63 @@ AlarmProbableCause ::= TEXTUAL-CONVENTION
         "Alarm probable cause as defined in ITU-T X.733."
     SYNTAX INTEGER {
         undefined (0),
-        adapterError (1),                       -- Equipment
-        applicationSubsystemFailure (2),        -- Processing
-        bandwidthReduced (3),                   -- Quality of service
-        callEstablishmentError (4),             -- Communications
-        communicationsProtocolError (5),        -- Communications
-        communicationsSubsystemFailure (6),     -- Communications
-        configurationOrCustomizationError (7),  -- Processing
-        congestion (8),                         -- Quality of service
-        corruptData (9),                        -- Processing
-        cpuCyclesLimitExceeded (10),            -- Processing
-        dTEdCEInterfaceError (11),              -- Communications
-        datasetOrModemError (12),               -- Equipment
-        degradedSignal (13),                    -- Communications
-        enclosureDoorOpen (14),                 -- Environmental
-        equipmentMalfunction (15),              -- Equipment
-        excessiveVibration (16),                -- Environmental
-        fileError (17),                         -- Processing
-        fireDetected (18),                      -- Environmental
-        floodDetected (19),                     -- Environmental
-        framingError (20),                      -- Communications
-        heatingOrVentilationOrCoolingSystemProblem (21), -- Environmental
-        humidityUnacceptable (22),              -- Environmental
-        inputDeviceError (23),                  -- Equipment
-        inputOutputDeviceError (24),            -- Equipment
-        lANError (25),                          -- Communications
-        leakDetected (26),                      -- Environmental
-        localNodeTransmissionError (27),        -- Communications
-        lossOfFrame (28),                       -- Communications
-        lossOfSignal (29),                      -- Communications
-        materialSupplyExhausted (30),           -- Environmental
-        multiplexerProblem (31),                -- Equipment
-        outOfMemory (32),                       -- Processing
-        outputDeviceError (33),                 -- Equipment
-        performanceDegraded (34),               -- Quality of service
-        powerProblem (35),                      -- Equipment
-        pressureUnacceptable (36),              -- Environmental
-        processorProblem (37),                  -- Equipment
-        pumpFailure (38),                       -- Environmental
-        queueSizeExceeded (39),                 -- Quality of service
-        receiveFailure (40),                    -- Equipment
-        receiverFailure (41),                   -- Equipment
-        remoteNodeTransmissionError (42),       -- Communications
-        resourceAtOrNearingCapacity (43),       -- Quality of service
-        responseTimeExcessive (44),             -- Quality of service
-        retransmissionRateExcessive (45),       -- Quality of service
-        softwareProgramError (46),              -- Processing
-        softwareError (47),                     -- Processing
-        softwareProgramAbnormallyTerminated (48), -- Processing
-        storageCapacityProblem (49),            -- Processing
-        temperatureUnacceptable (50),           -- Environmental
-        thresholdCrossed (51),                  -- Quality of service
-        timingProblem (52),                     -- Equipment
-        toxicLeakDetected (53),                 -- Environmental
-        transmitFailure (54),                   -- Equipment
-        transmitterFailure (55),                -- Equipment
-        underlyingResourceUnavailable (56),     -- Processing
-        versionMismatch (57) }                  -- Processing
+        adapterError (1),                       -- Equipment 
+        applicationSubsystemFailure (2),        -- Processing 
+        bandwidthReduced (3),                   -- Quality of service 
+        callEstablishmentError (4),             -- Communications 
+        communicationsProtocolError (5),        -- Communications 
+        communicationsSubsystemFailure (6),     -- Communications 
+        configurationOrCustomizationError (7),  -- Processing 
+        congestion (8),                         -- Quality of service 
+        corruptData (9),                        -- Processing 
+        cpuCyclesLimitExceeded (10),            -- Processing 
+        dTEdCEInterfaceError (11),              -- Communications 
+        datasetOrModemError (12),               -- Equipment 
+        degradedSignal (13),                    -- Communications 
+        enclosureDoorOpen (14),                 -- Environmental 
+        equipmentMalfunction (15),              -- Equipment 
+        excessiveVibration (16),                -- Environmental 
+        fileError (17),                         -- Processing 
+        fireDetected (18),                      -- Environmental 
+        floodDetected (19),                     -- Environmental 
+        framingError (20),                      -- Communications 
+        heatingOrVentilationOrCoolingSystemProblem (21), -- Environmental 
+        humidityUnacceptable (22),              -- Environmental 
+        inputDeviceError (23),                  -- Equipment 
+        inputOutputDeviceError (24),            -- Equipment 
+        lANError (25),                          -- Communications 
+        leakDetected (26),                      -- Environmental 
+        localNodeTransmissionError (27),        -- Communications 
+        lossOfFrame (28),                       -- Communications 
+        lossOfSignal (29),                      -- Communications 
+        materialSupplyExhausted (30),           -- Environmental 
+        multiplexerProblem (31),                -- Equipment 
+        outOfMemory (32),                       -- Processing 
+        outputDeviceError (33),                 -- Equipment 
+        performanceDegraded (34),               -- Quality of service 
+        powerProblem (35),                      -- Equipment 
+        pressureUnacceptable (36),              -- Environmental 
+        processorProblem (37),                  -- Equipment 
+        pumpFailure (38),                       -- Environmental 
+        queueSizeExceeded (39),                 -- Quality of service 
+        receiveFailure (40),                    -- Equipment 
+        receiverFailure (41),                   -- Equipment 
+        remoteNodeTransmissionError (42),       -- Communications 
+        resourceAtOrNearingCapacity (43),       -- Quality of service 
+        responseTimeExcessive (44),             -- Quality of service 
+        retransmissionRateExcessive (45),       -- Quality of service 
+        softwareProgramError (46),              -- Processing 
+        softwareError (47),                     -- Processing 
+        softwareProgramAbnormallyTerminated (48), -- Processing 
+        storageCapacityProblem (49),            -- Processing 
+        temperatureUnacceptable (50),           -- Environmental 
+        thresholdCrossed (51),                  -- Quality of service 
+        timingProblem (52),                     -- Equipment 
+        toxicLeakDetected (53),                 -- Environmental 
+        transmitFailure (54),                   -- Equipment 
+        transmitterFailure (55),                -- Equipment 
+        underlyingResourceUnavailable (56),     -- Processing 
+        versionMismatch (57) }                  -- Processing 
 
 
 UnitType ::= TEXTUAL-CONVENTION
@@ -140,7 +145,7 @@ UnitType ::= TEXTUAL-CONVENTION
     DESCRIPTION
         "The unit type in the M-Series.
 
-         nmb - Network Management Board. The controlling
+         nmb - Network Management Board. The controlling 
          board of the M-Series.
 
          psu1 - The Power Supply in slot 1 of the M-Series.
@@ -191,7 +196,7 @@ PortStatus ::= TEXTUAL-CONVENTION
     DESCRIPTION
         "The operational state for a port.
 
-        idle - The port is not activated
+        idle - The port is not activated.
 
         down - The port traffic is lost.
 
@@ -202,13 +207,22 @@ PortStatus ::= TEXTUAL-CONVENTION
         low - The port got to low power.
 
         eyeSafety - The Line Tx port is in Eye Safety Mode.
-        This means that either the connector on the
-        Line Tx port is not inserted or that you have
-        too strong reflection from the line fiber.
+                    This means that either the connector on the
+                    Line Tx port is not inserted or that you have
+                    too strong reflection from the line fiber.
 
         cd - Channel detected.
 
-        ncd - No channel detected."
+        ncd - No channel detected.
+
+        ready - The Link Loss is less than the Link Loss High Alarm Threshold
+                and higher than the Link Loss Low Alarm Threshold.
+
+        highLoss - The Link Loss is higher than the 
+                   Link Loss High Alarm Threshold.
+
+        lowLoss - The Link Loss is lower than the 
+                  Link Loss Low Alarm Threshold."
     SYNTAX INTEGER {
         idle (1),
         down (2),
@@ -217,7 +231,10 @@ PortStatus ::= TEXTUAL-CONVENTION
         low (5),
         eyeSafety (6),
         cd (7),
-        ncd (8) }
+        ncd (8),
+        ready (9),
+        highLoss (10),
+        lowLoss (11) }
 
 PortMode ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -226,12 +243,16 @@ PortMode ::= TEXTUAL-CONVENTION
 
          normal - The port is active. Alarms are not suppressed.
 
-         service - the port is in Service Mode. Alarms are
-         beeing suppressed. When service is ready the
-         Port Mode should be set back to normal."
+         service - The port is in Service Mode. Alarms are
+         beeing suppressed. When service is ready the 
+         Port Mode should be set back to normal.
+
+         disable - The port is disabled. The service will
+         go down when set to disable mode."
     SYNTAX INTEGER {
         normal (1),
-        service (2)
+        service (2),
+        disable (3)
     }
 
 END

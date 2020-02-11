@@ -1,4 +1,4 @@
-	-- SmartOptics Enterprise Specific Port MIB.
+-- SmartOptics Enterprise Specific Port MIB.
 --
 -- Copyright (c) 2014, SmartOptics
 -- All rights reserved
@@ -19,11 +19,14 @@ IMPORTS
     FROM MSERIES-MIB;
 
 smartPort     MODULE-IDENTITY
-                LAST-UPDATED    "201402121344Z"
+                LAST-UPDATED    "201502151235Z"
                 ORGANIZATION    "SmartOptics"
                 CONTACT-INFO    "http://www.smartoptics.com"
                 DESCRIPTION
                                 "This is the enterprise specific Port MIB for SmartOptics M-Series."
+                REVISION        "201502101235Z"
+                DESCRIPTION
+                                "Added smartPortLinkLoss."
                 REVISION        "201402121344Z"
                 DESCRIPTION
                                 "The initial revision of the MSERIES Port MIB."
@@ -84,7 +87,8 @@ SmartPortEntry ::=
         smartPortStatus                    PortStatus,
         smartPortMode                      PortMode,
         smartPortHighPowerAlarmThreshold   Integer32,
-        smartPortLowPowerAlarmThreshold    Integer32
+        smartPortLowPowerAlarmThreshold    Integer32,
+        smartPortLinkLoss                  Integer32
 }
 
 smartPortIndex OBJECT-TYPE
@@ -159,7 +163,17 @@ smartPortStatus OBJECT-TYPE
 
         cd(7) - Channel detected.
 
-        ncd(8) - No channel detected."
+        ncd(8) - No channel detected.
+
+        ready(9) - The Link Loss is less than the 
+                   Link Loss High Alarm Threshold and 
+                   higher than the Link Loss Low Alarm Threshold.
+
+        highLoss(10) - The Link Loss is higher than 
+                       the Link Loss High Alarm Threshold.
+
+        lowLoss(11) - The Link Loss is lower than the 
+                      Link Loss Low Alarm Threshold."
     ::= { smartPortEntry 6 }
 
 smartPortMode OBJECT-TYPE
@@ -174,6 +188,11 @@ smartPortMode OBJECT-TYPE
 
          service (2) . The port is in service mode
          and alarms are beeing suppressed. When service
+         is ready smartPortMode  should be set to 
+         'normal' again.
+
+	 disable (3) . The port is in disable mode
+         and alarms are beeing suppressed. When port
          is ready smartPortMode  should be set to
          'normal' again.
 
@@ -200,6 +219,14 @@ smartPortLowPowerAlarmThreshold OBJECT-TYPE
          Not writeable in SmartOS v2.3"
     ::= { smartPortEntry 9 }
 
+smartPortLinkLoss OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The link loss in units of 0.1 dB. For ports that 
+         doesn't support object this values returns 0."
+    ::= { smartPortEntry 10 }
 
 -- ----------------------------------------------------
 -- Conformance
@@ -221,22 +248,48 @@ smartPortListGroupV1 OBJECT-GROUP
         smartPortMode,
         smartPortHighPowerAlarmThreshold,
         smartPortLowPowerAlarmThreshold }
-    STATUS      current
+    STATUS      deprecated
     DESCRIPTION
         "The Port List MIB objects v1."
     ::= { smartPortGroups 1 }
+
+smartPortListGroupV2 OBJECT-GROUP
+    OBJECTS {
+        smartPortIndex,
+        smartPortName,
+        smartPortAlias,
+        smartPortType,
+        smartPortPower,
+        smartPortStatus,
+        smartPortMode,
+        smartPortHighPowerAlarmThreshold,
+        smartPortLowPowerAlarmThreshold,
+        smartPortLinkLoss }
+    STATUS      current
+    DESCRIPTION
+        "The Port List MIB objects v2."
+    ::= { smartPortGroups 2 }
 
 -- ----------------------------------------------------
 -- Compliance
 -- ----------------------------------------------------
 
 smartPortBasicComplV1 MODULE-COMPLIANCE
-    STATUS      current
+    STATUS      deprecated
     DESCRIPTION
         "Basic implementation requirements for the port MIB V1."
     MODULE
         MANDATORY-GROUPS {
             smartPortListGroupV1 }
     ::= { smartPortCompliances 1 }
+
+smartPortBasicComplV2 MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "Basic implementation requirements for the port MIB V2."
+    MODULE
+        MANDATORY-GROUPS {
+            smartPortListGroupV2 }
+    ::= { smartPortCompliances 2 }
 
 END

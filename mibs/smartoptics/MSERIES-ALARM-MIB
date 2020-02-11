@@ -1,4 +1,4 @@
-	-- SmartOptics Enterprise Specific Alarm MIB.
+-- SmartOptics Enterprise Specific Alarm MIB.
 --
 -- Copyright (c) 2011, SmartOptics
 -- All rights reserved
@@ -19,15 +19,17 @@ IMPORTS
     FROM MSERIES-MIB;
 
 smartAlarm      MODULE-IDENTITY
-                LAST-UPDATED    "201402121415Z"
+                LAST-UPDATED    "201502271314Z"
                 ORGANIZATION    "SmartOptics"
                 CONTACT-INFO    "http://www.smartoptics.com"
                 DESCRIPTION
                                 "This is the enterprise specific Alarm MIB for SmartOptics M-Series"
+                REVISION        "201502271314Z"
+                DESCRIPTION
+                                "Updated smartAlarmBasicComplV2 and smartAlarmActiveTableGroupV2 with alarmPortAlias."
                 REVISION        "201402121415Z"
                 DESCRIPTION
-                                "Added alarmLogList and smartAlarmMIBConformance."
-
+                                "Added alarmLogList, alarmPortAlias and smartAlarmMIBConformance."
                 REVISION        "201310151341Z"
                 DESCRIPTION
                                 "Added alarmHostName, alarmPortName and alarmPortType to AlarmEntry.
@@ -78,7 +80,8 @@ smartAlarmGeneralLastSeqNumber OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The sequence number of the last sent notification."
+        "The sequence number of the last sent notification.
+         A sequence number of 0 means no trap has been sent since boot up."
     ::= { alarmGeneral 1 }
 
 smartAlarmGeneralHighestSeverity OBJECT-TYPE
@@ -158,7 +161,7 @@ alarmUnit OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The alarming unit associated with this alarm.
-        undefined(0), nmb(1), psu1(2), psu2(3), fan(4), system&#40;5&#41;,
+        undefined(0), nmb(1), psu1(2), psu2(3), fan(4), system(5),
         slaveNmb(6), slavePsu1(7), slavePsu2(8), slaveFan(9)."
     ::= { alarmEntry 2 }
 
@@ -184,7 +187,7 @@ alarmSeverity OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The severity of the alarm as defined in
+        "The severity of the alarm as defined in 
         ITU-T X.733."
     ::= { alarmEntry 5 }
 
@@ -209,7 +212,7 @@ alarmSeqNumber OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The last sequence number used when issuing
+        "The last sequence number used when issuing 
         a notification for this alarm."
     ::= { alarmEntry 8 }
 
@@ -383,7 +386,7 @@ alarmLogUnit OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The alarming unit associated with this alarm.
-        undefined(0), nmb(1), psu1(2), psu2(3), fan(4), system&#40;5&#41;,
+        undefined(0), nmb(1), psu1(2), psu2(3), fan(4), system(5),
         slaveNmb(6), slavePsu1(7), slavePsu2(8), slaveFan(9)."
     ::= { alarmLogEntry 2 }
 
@@ -409,7 +412,7 @@ alarmLogSeverity OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The severity of the alarm as defined in
+        "The severity of the alarm as defined in 
         ITU-T X.733."
     ::= { alarmLogEntry 5 }
 
@@ -434,7 +437,7 @@ alarmLogSeqNumber OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The last sequence number used when issuing
+        "The last sequence number used when issuing 
         a notification for this alarm."
     ::= { alarmLogEntry 8 }
 
@@ -659,7 +662,7 @@ alarmNotificationCritical NOTIFICATION-TYPE
 -- ----------------------------------------------------
 
 smartAlarmGeneralGroupV1 OBJECT-GROUP
-    OBJECTS   { smartAlarmGeneralLastSeqNumber,
+    OBJECTS   { smartAlarmGeneralLastSeqNumber, 
                 smartAlarmGeneralHighestSeverity,
                 smartAlarmGeneralNumberActiveList,
                 smartAlarmGeneralNumberLogList }
@@ -693,7 +696,7 @@ smartAlarmActiveTableGroupV1 OBJECT-GROUP
                 alarmPortType,
                 alarmType,
                 alarmCause }
-    STATUS     current
+    STATUS     deprecated
     DESCRIPTION
            "The active alarm table objects V1."
     ::= { smartAlarmGroups 3 }
@@ -717,12 +720,32 @@ smartAlarmLogTableGroupV1 OBJECT-GROUP
            "The alarm log table objects V1."
     ::= { smartAlarmGroups 4 }
 
+smartAlarmActiveTableGroupV2 OBJECT-GROUP
+    OBJECTS   { alarmIndex,
+                alarmUnit,
+                alarmPort,
+                alarmText,
+                alarmSeverity,
+                alarmActivationTime,
+                alarmCeaseTime,
+                alarmSeqNumber,
+                alarmHostName,
+                alarmPortName,
+                alarmPortType,
+                alarmType,
+                alarmCause,
+                alarmPortAlias }
+    STATUS     current
+    DESCRIPTION
+           "The active alarm table objects V2."
+    ::= { smartAlarmGroups 5 }
+
 -- ----------------------------------------------------
 -- Compliance
 -- ----------------------------------------------------
 
 smartAlarmBasicComplV1 MODULE-COMPLIANCE
-    STATUS      current
+    STATUS      deprecated
     DESCRIPTION
         "Basic implementation requirements for the alarm MIB V1."
     MODULE
@@ -732,5 +755,17 @@ smartAlarmBasicComplV1 MODULE-COMPLIANCE
             smartAlarmActiveTableGroupV1,
             smartAlarmLogTableGroupV1 }
     ::= { smartAlarmCompliances 1 }
+
+smartAlarmBasicComplV2 MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "Basic implementation requirements for the alarm MIB V2."
+    MODULE
+        MANDATORY-GROUPS {
+            smartAlarmGeneralGroupV1,
+            smartAlarmNotificationGroupV1,
+            smartAlarmActiveTableGroupV2,
+            smartAlarmLogTableGroupV1 }
+    ::= { smartAlarmCompliances 2 }
 
 END

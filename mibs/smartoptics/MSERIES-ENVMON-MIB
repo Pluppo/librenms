@@ -1,4 +1,4 @@
-	-- SmartOptics Enterprise Specific Enviroment Monitor MIB.
+-- SmartOptics Enterprise Specific Enviroment Monitor MIB.
 --
 -- Copyright (c) 2014, SmartOptics
 -- All rights reserved
@@ -110,7 +110,7 @@ smartEnvMonTemperatureGroupV1 OBJECT-GROUP
     ::= { smartEnvMonGroups 1 }
 
 -- ----------------------------------------------------
--- Compliance
+-- Compliance 
 -- ----------------------------------------------------
 
 smartEnvMonBasicComplV1 MODULE-COMPLIANCE

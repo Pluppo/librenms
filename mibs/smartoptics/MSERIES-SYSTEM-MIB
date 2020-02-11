@@ -1,0 +1,87 @@
+-- SmartOptics Enterprise Specific System MIB.
+--
+-- Copyright (c) 2011, SmartOptics
+-- All rights reserved
+--
+
+MSERIES-SYSTEM-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE
+    FROM SNMPv2-SMI
+    DisplayString
+    FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP
+    FROM SNMPv2-CONF
+    mseries
+    FROM MSERIES-MIB;
+
+smartSystem     MODULE-IDENTITY
+                LAST-UPDATED    "201402162135Z"
+                ORGANIZATION    "SmartOptics"
+                CONTACT-INFO    "http://www.smartoptics.com"
+                DESCRIPTION
+                                "This is the enterprise specific SYSTEM MIB for SmartOptics M-Series"
+                REVISION        "201402162135Z"
+                DESCRIPTION
+                                "Initial revision."
+                ::=  { mseries 2 }
+
+
+        smartSystemObjects   OBJECT IDENTIFIER
+                ::=  { smartSystem  1}
+
+        smartSystemGeneral   OBJECT IDENTIFIER
+                ::=  { smartSystemObjects  1}
+
+        smartSystemMIBConformance   OBJECT IDENTIFIER
+                ::=  { smartSystem  2}
+
+        smartSystemGroups   OBJECT IDENTIFIER
+                ::=  { smartSystemMIBConformance  1}
+
+        smartSystemCompliances   OBJECT IDENTIFIER
+                ::=  { smartSystemMIBConformance  2}
+
+--
+-- General System group
+--
+
+    smartSystemGeneralMIBVersion OBJECT-TYPE
+        SYNTAX      DisplayString
+        MAX-ACCESS  read-only
+        STATUS      current
+        DESCRIPTION "The MIB version."
+        ::= { smartSystemGeneral 1 }
+
+
+-- ----------------------------------------------------
+-- Conformance
+-- ----------------------------------------------------
+
+-- ----------------------------------------------------
+-- Groups
+-- ----------------------------------------------------
+
+smartSystemGeneralGroupV1 OBJECT-GROUP
+    OBJECTS   {
+        smartSystemGeneralMIBVersion }
+    STATUS     current
+    DESCRIPTION
+           "The general system objects V1."
+    ::= { smartSystemGroups 1 }
+
+-- ----------------------------------------------------
+-- Compliance 
+-- ----------------------------------------------------
+
+smartSystemBasicComplV1 MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "Basic implementation requirements for the System MIB V1."
+    MODULE
+        MANDATORY-GROUPS {
+            smartSystemGeneralGroupV1 }
+    ::= { smartSystemCompliances 1 }
+
+END
